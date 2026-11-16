@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pra Você Mozão 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink-bg: #ffd6e7;
+      --pink-card: #fff0f6;
+      --pink-accent: #ff4d94;
+      --pink-dark: #c9184a;
+      --pink-soft: #ff85a1;
+      --green-ok: #2ec4b6;
+      --green-dark: #0f766e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #ffb3c6 100%);
+      min-height: 100vh;
+      color: #590d22;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Corações e lacinhos flutuantes de fundo */
+    .floating-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .float-item {
+      position: absolute;
+      opacity: 0.25;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(105vh) rotate(0deg); }
+      100% { transform: translateY(-10vh) rotate(360deg); }
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 24px 16px 40px;
+      position: relative;
+      z-index: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.45s ease;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* SVG Laço Rosa */
+    .bow-wrapper {
+      width: 120px;
+      margin: 0 auto 10px;
+      filter: drop-shadow(0 6px 12px rgba(201, 24, 74, 0.28));
+      animation: pulseBow 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulseBow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+
+    /* TELA 1: SENHA */
+    .login-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(10px);
+      border: 3px solid #ff85a1;
+      border-radius: 28px;
+      padding: 32px 24px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 18px 40px rgba(201, 24, 74, 0.2);
+      transition: all 0.4s ease;
+    }
+
+    .login-card.unlocked {
+      background: linear-gradient(135deg, #d8f3dc, #95d5b2);
+      border-color: #2d6a4f;
+      box-shadow: 0 18px 45px rgba(45, 106, 79, 0.35);
+    }
+
+    .title-main {
+      font-weight: 800;
+      font-size: 1.75rem;
+      color: var(--pink-dark);
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle-lock {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #a4133c;
+      margin-bottom: 20px;
+    }
+
+    .pass-input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: 2px solid #ff758f;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+      color: var(--pink-dark);
+      outline: none;
+      background: #fff0f3;
+      margin-bottom: 12px;
+      transition: 0.3s;
+    }
+
+    .pass-input:focus {
+      border-color: var(--pink-dark);
+      box-shadow: 0 0 0 4px rgba(255, 77, 148, 0.2);
+    }
+
+    .hint-text {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #800f2f;
+      background: #ffe5ec;
+      padding: 10px 12px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      line-height: 1.4;
+    }
+
+    .btn-pink {
+      background: linear-gradient(135deg, #ff4d94, #c9184a);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(201, 24, 74, 0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+
+    .btn-pink:active {
+      transform: scale(0.96);
+    }
+
+    .error-msg {
+      color: #d00000;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-top: 10px;
+      min-height: 20px;
+    }
+
+    .success-banner {
+      display: none;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #1b4332;
+      margin-top: 14px;
+      animation: popIn 0.4s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* TELA 2: MENU */
+    .menu-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .menu-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--pink-dark);
+      text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .menu-sub {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #a4133c;
+      margin-top: 6px;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .menu-box {
+      background: rgba(255, 255, 255, 0.92);
+      border: 3px solid #ff85a1;
+      border-radius: 24px;
+      padding: 24px 14px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(201, 24, 74, 0.16);
+      transition: transform 0.25s, border-color 0.25s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 165px;
+    }
+
+    .menu-box:hover {
+      transform: translateY(-4px);
+      border-color: var(--pink-dark);
+    }
+
+    .menu-box-icon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .menu-box h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--pink-dark);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .menu-box p {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #800f2f;
+      line-height: 1.3;
+    }
+
+    .btn-back {
+      margin-top: 22px;
+      background: #fff;
+      color: var(--pink-dark);
+      border: 2px solid var(--pink-dark);
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* TELA 3: NOSSAS MEMÓRIAS */
+    .memories-container {
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .photo-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      background: #fff;
+      border: 6px solid #fff;
+      border-radius: 24px;
+      box-shadow: 0 16px 36px rgba(201, 24, 74, 0.25);
+      overflow: hidden;
+      cursor: pointer;
+      margin: 16px 0;
+    }
+
+    .photo-stage img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    .photo-slide-out {
+      transform: translateX(-40px) scale(0.95);
+      opacity: 0;
+    }
+
+    .photo-counter {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(201, 24, 74, 0.85);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    .tap-hint {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #800f2f;
+      background: rgba(255, 255, 255, 0.75);
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    /* TELA 4: CALENDÁRIO DO AMOR */
+    .journey-card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 3px solid #ff85a1;
+      border-radius: 28px;
+      padding: 26px 20px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 16px 36px rgba(201, 24, 74, 0.2);
+    }
+
+    .couple-frame {
+      width: 210px;
+      height: 210px;
+      margin: 16px auto;
+      border-radius: 50%;
+      border: 5px solid #ff4d94;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(201, 24, 74, 0.25);
+    }
+
+    .couple-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .date-range-badge {
+      background: #ffe5ec;
+      color: var(--pink-dark);
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 8px 14px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .timer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .time-box {
+      background: linear-gradient(135deg, #ff758f, #ff4d94);
+      color: #fff;
+      border-radius: 16px;
+      padding: 12px 6px;
+      box-shadow: 0 6px 14px rgba(255, 77, 148, 0.25);
+    }
+
+    .time-box span {
+      display: block;
+      font-size: 1.45rem;
+      font-weight: 800;
+    }
+
+    .time-box small {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* TELA 5: JOGO DA MEMÓRIA */
+    .memory-header {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .memory-stats {
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--pink-dark);
+      background: rgba(255, 255, 255, 0.85);
+      padding: 6px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 8px;
+    }
+
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+      max-width: 460px;
+      width: 100%;
+    }
+
+    .mem-card {
+      aspect-ratio: 1 / 1;
+      perspective: 800px;
+      cursor: pointer;
+    }
+
+    .mem-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.45s ease;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(201, 24, 74, 0.18);
+    }
+
+    .mem-card.flipped .mem-inner,
+    .mem-card.matched .mem-inner {
+      transform: rotateY(180deg);
+    }
+
+    .mem-front, .mem-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .mem-front {
+      background: linear-gradient(135deg, #ff758f, #ff4d94);
+      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .mem-back {
+      transform: rotateY(180deg);
+      border: 2px solid #ff4d94;
+      background: #fff;
+    }
+
+    .mem-back img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* TELA 6: SEGREDO */
+    .secret-card {
+      background: rgba(255, 245, 248, 0.94);
+      border: 3px solid #ff85a1;
+      border-radius: 28px;
+      padding: 26px 20px;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 18px 40px rgba(201, 24, 74, 0.22);
+      position: relative;
+    }
+
+    .bows-row {
+      display: flex;
+      justify-content: space-around;
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+
+    .music-box {
+      background: #ffe5ec;
+      border: 2px solid #ff85a1;
+      border-radius: 18px;
+      padding: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .music-label {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--pink-dark);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .yt-frame {
+      width: 100%;
+      height: 180px;
+      border-radius: 12px;
+      border: none;
+    }
+
+    .love-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      line-height: 1.72;
+      color: #4a0e22;
+      text-align: left;
+      white-space: pre-line;
+      user-select: text;
+    }
+
+    .love-letter-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.2rem;
+      color: var(--pink-dark);
+      text-align: center;
+      margin-bottom: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fundo animado com lacinhos e corações -->
+  <div class="floating-bg" id="floatingBg"></div>
+
+  <!-- TELA 1: CAPA COM SENHA -->
+  <section class="screen active" id="screen-login">
+    <div class="login-card" id="loginCard">
+      <!-- Laço Rosa SVG -->
+      <div class="bow-wrapper">
+        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M95 62 C65 95, 45 110, 32 115 L45 92 L22 95 C45 80, 70 68, 92 58 Z" fill="#ff4d94"/>
+          <path d="M105 62 C135 95, 155 110, 168 115 L155 92 L178 95 C155 80, 130 68, 108 58 Z" fill="#ff4d94"/>
+          <path d="M95 55 C55 10, 10 20, 15 58 C20 92, 65 80, 95 60 Z" fill="#ff758f" stroke="#c9184a" stroke-width="3"/>
+          <path d="M105 55 C145 10, 190 20, 185 58 C180 92, 135 80, 105 60 Z" fill="#ff758f" stroke="#c9184a" stroke-width="3"/>
+          <rect x="86" y="42" width="28" height="32" rx="12" fill="#c9184a"/>
+        </svg>
+      </div>
+
+      <h1 class="title-main">PRA VOCÊ MOZÃO</h1>
+      <p class="subtitle-lock">AMOR SÓ ENTRA NA SENHA</p>
+
+      <input type="text" id="passwordInput" class="pass-input" placeholder="Digite a senha..." autocomplete="off" />
+
+      <div class="hint-text">
+        DICA: VOCÊ AMA MUITO AMOR E CUIDA MUITO
+      </div>
+
+      <button class="btn-pink" id="unlockBtn" onclick="checkPassword()">ENTRAR 💖</button>
+
+      <div class="error-msg" id="errorMsg"></div>
+      <div class="success-banner" id="successBanner">
+        ✅ NOSSA AMOR VOCÊ ACERTOU EM CHEIO 💚
+      </div>
+    </div>
+  </section>
+
+  <!-- TELA 2: MENU DO NOSSO AMOR -->
+  <section class="screen" id="screen-menu">
+    <div class="menu-header">
+      <div class="bow-wrapper" style="width: 90px;">
+        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M95 62 C65 95, 45 110, 32 115 L45 92 L22 95 C45 80, 70 68, 92 58 Z" fill="#ff4d94"/>
+          <path d="M105 62 C135 95, 155 110, 168 115 L155 92 L178 95 C155 80, 130 68, 108 58 Z" fill="#ff4d94"/>
+          <path d="M95 55 C55 10, 10 20, 15 58 C20 92, 65 80, 95 60 Z" fill="#ff758f" stroke="#c9184a" stroke-width="3"/>
+          <path d="M105 55 C145 10, 190 20, 185 58 C180 92, 135 80, 105 60 Z" fill="#ff758f" stroke="#c9184a" stroke-width="3"/>
+          <rect x="86" y="42" width="28" height="32" rx="12" fill="#c9184a"/>
+        </svg>
+      </div>
+      <h1 class="menu-title">MENU DO NOSSO AMOR</h1>
+      <p class="menu-sub">♡ juntos para sempre ♡</p>
+    </div>
+
+    <div class="menu-grid">
+      <div class="menu-box" onclick="openMemories()">
+        <div class="menu-box-icon">📸</div>
+        <h3>NOSSAS MEMORIAS</h3>
+        <p>MELHORES MOMENTOS COM VOCÊ 💖</p>
+      </div>
+
+      <div class="menu-box" onclick="openScreen('screen-calendar')">
+        <div class="menu-box-icon">📅</div>
+        <h3>Calendario do Amor</h3>
+        <p>calculadora de tempo do nosso amor 💖</p>
+      </div>
+
+      <div class="menu-box" onclick="openMemoryGame()">
+        <div class="menu-box-icon">🧩</div>
+        <h3>JOGO DA MEMORIA</h3>
+        <p>VAMOS JOGAR MO 😅</p>
+      </div>
+
+      <div class="menu-box" onclick="openSecret()">
+        <div class="menu-box-icon">💌</div>
+        <h3>SEGREDO</h3>
+        <p>Uma surpresa especial pra você 🎀</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELA 3: NOSSAS MEMÓRIAS -->
+  <section class="screen" id="screen-memories">
+    <div class="memories-container">
+      <h1 class="title-main">EU & VOCÊ</h1>
+      <p class="subtitle-lock">MELHORES MOMENTOS COM VOCÊ 💖</p>
+
+      <div class="photo-stage" onclick="nextMemoryPhoto()">
+        <span class="photo-counter" id="photoCounter">1 / 10</span>
+        <img id="memoryPhotoImg" src="./foto1.jpg" alt="Nossa Memória" />
+      </div>
+
+      <div class="tap-hint" id="tapHint">Clique na foto para passar para a próxima 👉</div>
+      <br />
+      <button class="btn-back" onclick="openScreen('screen-menu')">⬅ Voltar ao Menu</button>
+    </div>
+  </section>
+
+  <!-- TELA 4: CALENDÁRIO DO AMOR -->
+  <section class="screen" id="screen-calendar">
+    <div class="journey-card">
+      <h1 class="title-main">NOSSA JORNADA AMOR</h1>
+      <p class="subtitle-lock">há quanto tempo estamos juntos ?</p>
+
+      <div class="couple-frame">
+        <img src="./foto1.jpg" alt="Nós dois" />
+      </div>
+
+      <div class="date-range-badge">
+        Desde 16/03/2026 até hoje 16/11/2026 ❤️
+      </div>
+
+      <div class="timer-grid">
+        <div class="time-box">
+          <span id="t-months">8</span>
+          <small>Meses</small>
+        </div>
+        <div class="time-box">
+          <span id="t-days">245</span>
+          <small>Dias</small>
+        </div>
+        <div class="time-box">
+          <span id="t-hours">5880</span>
+          <small>Horas</small>
+        </div>
+        <div class="time-box">
+          <span id="t-mins">00</span>
+          <small>Minutos</small>
+        </div>
+        <div class="time-box">
+          <span id="t-secs">00</span>
+          <small>Segundos</small>
+        </div>
+        <div class="time-box">
+          <span>∞</span>
+          <small>Para Sempre</small>
+        </div>
+      </div>
+
+      <button class="btn-back" onclick="openScreen('screen-menu')">⬅ Voltar ao Menu</button>
+    </div>
+  </section>
+
+  <!-- TELA 5: JOGO DA MEMÓRIA -->
+  <section class="screen" id="screen-game">
+    <div class="memory-header">
+      <h1 class="title-main" style="font-size: 1.45rem;">UM JOGUINHO PARA VOCÊ SE DESTRAIR AMOR</h1>
+      <p class="subtitle-lock" style="margin-bottom: 6px;">TENTE ACERTAR TODAS AS FOTOS</p>
+      <div class="memory-stats">Pares encontrados: <span id="pairsFound">0</span> / 15</div>
+    </div>
+
+    <div class="memory-grid" id="memoryGrid"></div>
+
+    <button class="btn-back" onclick="openScreen('screen-menu')">⬅ Voltar ao Menu</button>
+  </section>
+
+  <!-- TELA 6: SEGREDO -->
+  <section class="screen" id="screen-secret">
+    <div class="secret-card">
+      <div class="bows-row">🎀 💖 🎀 💕 🎀</div>
+
+      <div class="music-box">
+        <span class="music-label">🎵 Perfect — Ed Sheeran (Nossa Música)</span>
+        <div id="ytPlayerContainer"></div>
+      </div>
+
+      <div class="love-letter-title">Minha princesa... Meu amor</div>
+
+      <div class="love-letter">Hoje completamos 8 meses juntos neném, eu queria que você pudesse ver por alguns segundos tudo que existe no meu coração quando penso em você amor.
+
+As vezes me pego pensando e olhando nossas fotos, lembrando dos nossos abraços, do nosso primeiro beijo, de nossas risadas e até mesmo das pequenas coisas que talvez você nem imagina que ficaram guardadas tão fundas em mim. E sabe o que eu percebe amor ? Que os momentos mais simples se tornam incríveis quando é vivido com você.
+
+Você não faz ideia do quanto é especial para mim. Eu queria que você tivesse sendo eu, e ver o quanto eu admiro você, o quanto eu sou apaixonado por você e também você entenderia o pq seu sorriso me encanta tanto, pq seu abraço é um dos meus lugares favoritos e o pq a sua presença, seu carinho, seu cuidado, seu amor, sua preocupação e sua ajuda faz tanta diferença nos meus dias.
+
+Eu não quero ser apenas alguém que esteve ao seu lado e dure uma fase bonita na sua vida. Quero ser o HOMEM que você possa encontrar em todos os capítulos da sua história. Quero estar presente nas suas conquistas, nos seus sonhos kkkkk, no seus dias felizes e também no seus dias que tudo parece está difícil.
+
+Quero conhecer cada versão sua, realizar nossos sonhos, quem sabe construir nossa família, e um dia, olhar pra você e lembrar que tudo começou naquela estação do metrô com eu fingindo que estava em ligação kakakaaakkaka e chamando você e você vindo em minha direção toda linda e eu pegando sua mão e pedindo seu insta. ali foi onde meu coração decidiu tentar uma chance e ter um futuro juntos.
+
+Se um dia você ficam em dúvida do quanto é amada, leia essas palavras. Você é uma mulher preciosa que a vida colocou no meu caminho, e eu sou imensamente e infinitamente feliz por poder chamar você de minha.
+
+Obrigado pelos 8 meses, minha princesa. Obrigado por cada lembrança, cada carinho, amor e cuidado por mim e por fazer parte da minha vida. Obrigado por tudo sapequinha. kkkkkk
+
+Eu ainda não sei quantas paginas ainda teremos para escrever, mas sei que quero continuar escrevendo e vivendo cada uma delas com você amor.
+
+Quero não só comemorar 8 meses do seu lado. Quero ter felicidade de comemorar anos, uma vida inteira segurando a sua mão e beijando a sua boca gostosa e te abraçando forte. E você é a minha namorada mais linda, bonita, perfeita, atraente, marcante e gostosa. 
+
+Feliz 8 meses mozão, minha futura companheira de tantas história. Eu te amo muitão grandão e gingantão. ❤️🥹</div>
+
+      <div class="bows-row" style="margin-top: 18px; margin-bottom: 0;">🎀 💖 🎀 💕 🎀</div>
+
+      <div style="text-align: center;">
+        <button class="btn-back" onclick="closeSecret()">⬅ Voltar ao Menu</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // =========================================================================
+    // CONFIGURAÇÃO DAS FOTOS (Coloque as fotos na mesma pasta no GitHub)
+    // foto1.jpg até foto10.jpg -> Usadas em "Nossas Memórias" e no Calendário
+    // foto1.jpg até foto15.jpg -> Usadas nos 15 pares do "Jogo da Memória"
+    // =========================================================================
+    const MEMORIES_PHOTOS = [
+      './foto1.jpg',
+      './foto2.jpg',
+      './foto3.jpg',
+      './foto4.jpg',
+      './foto5.jpg',
+      './foto6.jpg',
+      './foto7.jpg',
+      './foto8.jpg',
+      './foto9.jpg',
+      './foto10.jpg'
+    ];
+
+    const GAME_PHOTOS = [
+      './foto1.jpg',
+      './foto2.jpg',
+      './foto3.jpg',
+      './foto4.jpg',
+      './foto5.jpg',
+      './foto6.jpg',
+      './foto7.jpg',
+      './foto8.jpg',
+      './foto9.jpg',
+      './foto10.jpg',
+      './foto11.jpg',
+      './foto12.jpg',
+      './foto13.jpg',
+      './foto14.jpg',
+      './foto15.jpg'
+    ];
+
+    // Fundo decorativo com lacinhos e corações
+    const bgContainer = document.getElementById('floatingBg');
+    const icons = ['🎀', '💖', '💕', '🌸', '🎀'];
+    for (let i = 0; i < 22; i++) {
+      const el = document.createElement('div');
+      el.className = 'float-item';
+      el.textContent = icons[i % icons.length];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.fontSize = (18 + Math.random() * 18) + 'px';
+      el.style.animationDuration = (9 + Math.random() * 10) + 's';
+      el.style.animationDelay = (-Math.random() * 12) + 's';
+      bgContainer.appendChild(el);
+    }
+
+    // Navegação entre telas
+    function openScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // TELA 1: Validação da senha DIMITRI
+    document.getElementById('passwordInput').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value.trim().toUpperCase();
+      const errorMsg = document.getElementById('errorMsg');
+      const card = document.getElementById('loginCard');
+      const banner = document.getElementById('successBanner');
+
+      if (input === 'DIMITRI') {
+        errorMsg.textContent = '';
+        card.classList.add('unlocked');
+        banner.style.display = 'block';
+        document.getElementById('unlockBtn').style.display = 'none';
+        setTimeout(() => {
+          openScreen('screen-menu');
+        }, 1800);
+      } else {
+        errorMsg.textContent = 'Ops amor! Senha incorreta, tenta de novo 😘';
+      }
+    }
+
+    // TELA 3: Galeria de 10 fotos
+    let currentPhotoIdx = 0;
+
+    function openMemories() {
+      currentPhotoIdx = 0;
+      updateMemoryView();
+      openScreen('screen-memories');
+    }
+
+    function updateMemoryView() {
+      const img = document.getElementById('memoryPhotoImg');
+      const counter = document.getElementById('photoCounter');
+      const hint = document.getElementById('tapHint');
+
+      img.src = MEMORIES_PHOTOS[currentPhotoIdx];
+      counter.textContent = `${currentPhotoIdx + 1} / ${MEMORIES_PHOTOS.length}`;
+      hint.textContent = currentPhotoIdx < MEMORIES_PHOTOS.length - 1
+        ? 'Clique na foto para passar para a próxima 👉'
+        : 'Última foto! Clique para voltar ao menu 💖';
+    }
+
+    function nextMemoryPhoto() {
+      const img = document.getElementById('memoryPhotoImg');
+      img.classList.add('photo-slide-out');
+
+      setTimeout(() => {
+        currentPhotoIdx++;
+        if (currentPhotoIdx >= MEMORIES_PHOTOS.length) {
+          img.classList.remove('photo-slide-out');
+          openScreen('screen-menu');
+          return;
+        }
+        updateMemoryView();
+        img.classList.remove('photo-slide-out');
+      }, 240);
+    }
+
+    // TELA 4: Contador desde 16/03/2026 até 16/11/2026 (com relógio ao vivo)
+    function updateLoveTimer() {
+      const startDate = new Date(2026, 2, 16, 0, 0, 0); // 16/03/2026
+      const now = new Date();
+      const baseRef = now >= startDate ? now : new Date(2026, 10, 16, 12, 0, 0);
+
+      const diffMs = baseRef - startDate;
+      const totalSeconds = Math.floor(diffMs / 1000);
+      const totalMinutes = Math.floor(totalSeconds / 60);
+      const totalHours = Math.floor(totalMinutes / 60);
+      const totalDays = Math.floor(totalHours / 24);
+
+      let months = (baseRef.getFullYear() - startDate.getFullYear()) * 12 + (baseRef.getMonth() - startDate.getMonth());
+      if (baseRef.getDate() < startDate.getDate()) months--;
+
+      document.getElementById('t-months').textContent = Math.max(8, months);
+      document.getElementById('t-days').textContent = totalDays;
+      document.getElementById('t-hours').textContent = totalHours;
+      document.getElementById('t-mins').textContent = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('t-secs').textContent = String(now.getSeconds()).padStart(2, '0');
+    }
+    setInterval(updateLoveTimer, 1000);
+    updateLoveTimer();
+
+    // TELA 5: Jogo da Memória com 15 fotos (30 cartas)
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let lockBoard = false;
+
+    function openMemoryGame() {
+      matchedPairs = 0;
+      flippedCards = [];
+      lockBoard = false;
+      document.getElementById('pairsFound').textContent = '0';
+
+      const deck = [...GAME_PHOTOS, ...GAME_PHOTOS]
+        .map((src, idx) => ({ id: idx, src }))
+        .sort(() => Math.random() - 0.5);
+
+      const grid = document.getElementById('memoryGrid');
+      grid.innerHTML = '';
+
+      deck.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'mem-card';
+        card.dataset.src = item.src;
+        card.innerHTML = `
+          <div class="mem-inner">
+            <div class="mem-front">?</div>
+            <div class="mem-back"><img src="${item.src}" alt="Foto"></div>
+          </div>
+        `;
+        card.addEventListener('click', () => flipCard(card));
+        grid.appendChild(card);
+      });
+
+      openScreen('screen-game');
+    }
+
+    function flipCard(card) {
+      if (lockBoard || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+
+      card.classList.add('flipped');
+      flippedCards.push(card);
+
+      if (flippedCards.length === 2) {
+        lockBoard = true;
+        const [c1, c2] = flippedCards;
+
+        if (c1.dataset.src === c2.dataset.src) {
+          c1.classList.add('matched');
+          c2.classList.add('matched');
+          matchedPairs++;
+          document.getElementById('pairsFound').textContent = matchedPairs;
+          flippedCards = [];
+          lockBoard = false;
+
+          if (matchedPairs === 15) {
+            setTimeout(() => {
+              alert('PARABÉNS MEU AMOR! Você acertou todas as 15 fotos! 💖🎉');
+            }, 400);
+          }
+        } else {
+          setTimeout(() => {
+            c1.classList.remove('flipped');
+            c2.classList.remove('flipped');
+            flippedCards = [];
+            lockBoard = false;
+          }, 850);
+        }
+      }
+    }
+
+    // TELA 6: Segredo + Música Perfect do YouTube
+    function openSecret() {
+      const container = document.getElementById('ytPlayerContainer');
+      container.innerHTML = `
+        <iframe
+          class="yt-frame"
+          src="https://www.youtube.com/embed/5WLEzL777BI?autoplay=1&loop=1&playlist=5WLEzL777BI"
+          title="Perfect - Ed Sheeran"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      `;
+      openScreen('screen-secret');
+    }
+
+    function closeSecret() {
+      document.getElementById('ytPlayerContainer').innerHTML = '';
+      openScreen('screen-menu');
+    }
+  </script>
+</body>
+</html>
